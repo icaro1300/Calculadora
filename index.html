@@ -1,87 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cakc</title>
+    <title>Calculadora</title>
 </head>
-<body>
+
+<body  style="background-image: url(1_gif.gif); background-repeat:no-repeat; background-size: cover;" >
     <div class="fundo"> 
-
-       <h1> icaro</h1> 
-       <div class="calculadora"> 
-        <h1>calculadora</h1>
-              <p style="color: black;" id="resultado"></p>
-           <table> 
-
-                   <tr>
-                      
-                            <td> <button class="botao" onclick="clear()" >C</button></td>
-                            <td> <button class="botao" onclick="insert('7')" ><</button></td>
-                            <td> <button class="botao" onclick="insert('/')" >/</button></td>
-                            <td> <button class="botao" onclick="insert('*')" >X</button></td>
-
-                  </tr>
-                  <tr>
-                      
-                             <td> <button class="botao" onclick="insert('7')">7</button></td>
-                             <td> <button class="botao" onclick="insert('8')">8</button></td>
-                             <td> <button class="botao" onclick="insert('9')">9</button></td>
-                             <td> <button class="botao">+</button></td>
-
+       <h1 style="padding: 25px; color: rgb(250, 222, 97)">Calculadora de Ícaro</h1>
+        <div class="calculadora"> 
+        <h1 style="color:  white;" > Calculadora</h1>
+              <input type="text" id="resultado" placeholder="0" 
+              style="padding: 20px; color: black; margin-left: 5px; text-align: right; font-size: 17px; font-family:'sans-serif'; font-weight: bold;  font-weight: 600; border-color: rgb(255, 81, 0); border-radius: 10px; border-width: 7px;">
+              
+            <table> 
+                <tr>
+                    <td><button class="botao" onclick="clean()">C</button></td>
+                    <td><button class="botao" onclick="back()"><</button></td>
+                    <td><button class="botao" onclick="insert('/')">/</button></td>
+                    <td><button class="botao" onclick="insert('*')">x</button></td>
+                </tr>
+              
+                <tr>
+                    <td><button class="botao" onclick="insert('7')">7</button></td>
+                    <td><button class="botao" onclick="insert('8')">8</button></td>
+                    <td><button class="botao" onclick="insert('9')">9</button></td>
+                    <td><button class="botao" onclick="insert('-')">-</button></td>
                  </tr>
+
                  <tr>
-                      
-                    <td> <button class="botao" onclick="insert('4')">4</button></td>
-                    <td> <button class="botao" onclick="insert('5')">5</button></td>
-                    <td> <button class="botao" onclick="insert('6')">6</button></td>
-                    <td> <button class="botao">-</button></td>
-
+                    <td><button class="botao" onclick="insert('4')">4</button></td>
+                    <td><button class="botao" onclick="insert('5')">5</button></td>
+                    <td><button class="botao" onclick="insert('6')">6</button></td>
+                    <td><button class="botao" onclick="insert('+')">+</button></td>
                  </tr>
+
                  <tr>
-                      
-                    <td> <button class="botao" onclick="insert('1')">1</button></td>
-                    <td> <button class="botao" onclick="insert('2')">2</button></td>
-                    <td> <button class="botao" onclick="insert('3')">3</button></td>
-                    <td RoWspan="2"> <button class="botao" style="height: 106px;">=</button></td>
-
+                    <td><button class="botao" onclick="insert('1')">1</button></td>
+                    <td><button class="botao" onclick="insert('2')">2</button></td>
+                    <td><button class="botao" onclick="insert('3')">3</button></td>
+                    <td rowspan="2"><button class="botao" style="height: 106px;" onclick="calcular()">=</button></td>
                  </tr>
+
                  <tr>
-                       <td colspan="2"><button class="botao" style="width: 106px;">0</button></td> 
-                        <td><button class="botao">.</button></td>
-
-
-
+                    <td colspan="2"><button class="botao" style="width: 106px;" onclick="insert('0')">0</button></td>
+                    <td><button class="botao" onclick="insert('.')">.</button></td>
                  </tr>
- 
-          
-
-           </table>
-
-
+                  
+            </table>
        </div>
     </div>
+
     <script>
-
-        function insert(num){
-
-       document.getElementById('resultado').innerHTML += num;
+        const display = document.getElementById('resultado');
     
+        function updateDisplay() {
+            display.focus();
+            display.setSelectionRange(display.value.length, display.value.length);
         }
-        function clear()
-        {
-            document.getElementById('resultado').innerHTML = "";
-        }    
-        function back()
-        {
-            var resultado = document.getElementById('resultado').innerHTML;
-            document.getElementById('resultado').innerHTML = resultado.substring(0, resultado. -1);
+    
+        function insert(num) {
+            display.value += num;
+            updateDisplay();
         }
+    
+        function clean() {
+            display.value = '';
+            updateDisplay();
+        }
+    
+        function back() {
+            var resultado = display.value;
+            display.value = resultado.substring(0, resultado.length - 1);
+            updateDisplay();
+        }
+    
+        function calcular() {
+            var resultado = display.value;
+            if (resultado) {
+                display.value = eval(resultado);
+            } else {
+                display.value = "Nada...";
+            }
+            updateDisplay();
+        }
+    
+        // Adiciona um ouvinte de evento para o teclado
+        document.addEventListener("keydown", function(event) {
+            if (event.key >= "0" && event.key <= "9") {
+                if (document.activeElement === display) {
+                    event.preventDefault();
+                    display.value += event.key;
+                    updateDisplay();
+                }
+            } else if (event.key === "Enter") {
+                event.preventDefault();
+                calcular();
+            }
+        });
+    
+        // Chama a função de atualização quando a página carrega
+        updateDisplay();
     </script>
+    
+    
 </body>
 </html>
-
-
 <style>
 
     *{
@@ -89,47 +112,52 @@
        padding: 0;
     }
 
+h1 {
+    font-family: Georgia;
+    text-align: center;
+    border: 5px;
+}
 .fundo{
 
-background-image: linear-gradient(45deg,black,red);
 height: 100vh;
 color: white;
 font-family: Arial, Helvetica, sans-serif;
-
 }
 
 .calculadora{
-
 position: absolute;
-background-color: rgba(0, 0, 0, 0.8);
+background-color: rgba(255, 255, 255, 0.1);
 top: 50%;
-left:50%;
+left: 50%;
 transform: translate(-50%,-50%);
 border-radius: 15px ;
 padding: 15px;
-
 }
-.botao {
 
+.botao {
 width: 50px;
 height: 50px;
 font-size: 25px;
 cursor: pointer;
-background-color: rgb(31,31, 31);
+margin: 3px;
+background-color:  rgb(250, 222, 97);
 border: none;
 color: white;
-
 }
+
 .botao:hover{
-
-background-color: black;
-
+background-color: rgb(192, 192, 192);
 }
-#resultado{
 
-width: 207px;
+#resultado{
 background-color: white;
+width: 207px;
 height: 30px;
+margin: 5px;
+font-size: 25px;
+color: black;
+text-align: right;
+padding: 5px;
 }
 
 </style>
